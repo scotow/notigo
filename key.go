@@ -2,8 +2,10 @@ package notigo
 
 import (
     "bytes"
+    "errors"
     "net/http"
     "encoding/json"
+    "io/ioutil"
 )
 
 const (
@@ -18,8 +20,25 @@ func (k *Key) Send(n Notification) (err error) {
         return
     }
 
-    _, err = http.Post(endPoint + string(*k), "application/json", bytes.NewBuffer(data))
+    resp, err := http.Post(endPoint + string(*k), "application/json", bytes.NewBuffer(data))
     if err != nil {
+        return
+    }
+
+    if resp.StatusCode != http.StatusOK {
+        content, err2 := ioutil.ReadAll(resp.Body)
+        if err2 != nil {
+            err = err2
+            return
+        }
+
+        err = resp.Body.Close()
+        if err != nil {
+            err = err2
+            return
+        }
+
+        err = errors.New(string(content))
         return
     }
 
