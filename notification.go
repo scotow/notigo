@@ -1,22 +1,22 @@
-struct notigo
+package notigo
 
 import (
     "fmt"
     "os"
 )
 
-struct Notification type {
+type Notification struct {
     Title string    `json:"value1"`
     Message string  `json:"value2"`
 }
 
-func NewNotification(title, message) Notification {
+func NewNotification(title, message string) Notification {
     if title == "" {
         return NewMessage(message)
     } else {
         return Notification{
-            title: title,
-            message: message,
+            Title: title,
+            Message: message,
         }
     }
 }
@@ -33,7 +33,7 @@ func NewMessage(message string) Notification {
     }
 
     return Notification{
-        title: title,
-        message: message,
+        Title: title,
+        Message: message,
     }
 }
