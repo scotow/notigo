@@ -13,7 +13,7 @@ import (
 )
 
 const (
-    keySubPath = ".config/notigo"
+    keySubPath = ".config/notigo/config"
 )
 
 var (
