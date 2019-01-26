@@ -26,7 +26,6 @@ func NewMessage(message string) Notification {
 
     hostname, err := os.Hostname()
     if err != nil {
-        _, _ = fmt.Fprintln(os.Stderr, "invalid hostname:", err)
         title = "Notigo"
     } else {
         title = fmt.Sprintf("Notigo - %s", hostname)
