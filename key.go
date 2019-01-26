@@ -3,24 +3,30 @@ package notigo
 import (
     "bytes"
     "errors"
+    "fmt"
     "net/http"
     "encoding/json"
     "io/ioutil"
 )
 
 const (
-    endPoint = "https://maker.ifttt.com/trigger/notigo/with/key/"
+    endPointFormat  = "https://maker.ifttt.com/trigger/%s/with/key/%s"
+    DefaultEvent    = "notigo"
 )
 
 type Key string
 
 func (k *Key) Send(n Notification) (err error) {
+    return k.SendEvent(n, DefaultEvent)
+}
+
+func (k *Key) SendEvent(n Notification, event string) (err error) {
     data, err := json.Marshal(&n)
     if err != nil {
         return
     }
 
-    resp, err := http.Post(endPoint + string(*k), "application/json", bytes.NewBuffer(data))
+    resp, err := http.Post(fmt.Sprintf(endPointFormat, event, string(*k)), "application/json", bytes.NewBuffer(data))
     if err != nil {
         return
     }
