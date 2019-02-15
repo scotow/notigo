@@ -52,7 +52,7 @@ Now that you have created the applet and got your Webhook key, you can use the l
 
 ## Using the library
 
-Here is a simple example that send a notification with "Test" as title and "Hello from GitHub" as a message:
+Here is a simple example that send a notification with "Test" as a title and "Hello from GitHub" as a message:
 
 ```go
 package main
