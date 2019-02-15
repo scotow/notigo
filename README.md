@@ -45,7 +45,7 @@ The last step before using the applet is to get your Webhook key. Head to the [W
 
 For example, if the URL is `https://maker.ifttt.com/use/eHolJ7y7b8KVk4wUgZS6mY`, your key is `eHolJ7y7b8KVk4wUgZS6mY`.
 
-NB: Cliking the `Edit connection` button reset the event key, but the old key seems to be usable for a periode of time.
+NB: Cliking the `Edit connection` button reset the event key, but the old key seems to be usable for a while.
 
 Now that you have created the applet and got your Webhook key, you can use the library or the example command.
 
