@@ -91,7 +91,7 @@ Usage of notigo:
   [-e EVENT]
     	event name (default "notigo")
   [-k KEY]...
-    	IFTTT authentication key, ~/.config/notigo if not set
+    	IFTTT authentication key(s), ~/.config/notigo if not set
   [-t TITLE]
     	notification title
 ```
