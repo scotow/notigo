@@ -1,6 +1,6 @@
 # Notigo
 
-💬 Send iOS/Android notifications using IFTTT's webhook 💬
+💬 Send iOS/Android notifications using IFTTT's Webhook 💬
 
 ```
 go get -u github.com/Scotow/notigo
@@ -13,7 +13,7 @@ From Wikipedia:
 
 *[IFTTT](https://ifttt.com/) is a free web-based service to create chains of simple conditional statements, called applets. An applet is triggered by changes that occur within other web services such as Gmail, Facebook, Telegram, Instagram, or Pinterest.*
 
-IFTTT proposes hundreads of triggers, but the one that Notigo uses is the [Webhook](https://ifttt.com/maker_webhooks) trigger (also known as Maker Event).
+IFTTT proposes hundreds of triggers, but the one that Notigo uses is the [Webhook](https://ifttt.com/maker_webhooks) trigger (also known as Maker Event).
 
 By creating an IFTTT applet that send a rich notification to your device when a Webhook is triggered, we can create a simple wrapper that call the specified URL to trigger it from a HTTP call.
 
@@ -45,7 +45,7 @@ The last step before using the applet is to get your Webhook key. Head to the [W
 
 For example, if the URL is `https://maker.ifttt.com/use/eHolJ7y7b8KVk4wUgZS6mY`, your key is `eHolJ7y7b8KVk4wUgZS6mY`.
 
-NB: Cliking the `Edit connection` button reset the event key, but the old key seems to be usable for a while.
+NB: Clicking the `Edit connection` button reset the event key, but the old key seems to be usable for a while.
 
 Now that you have created the applet and got your Webhook key, you can use the library or the example command.
 
@@ -84,19 +84,19 @@ Using an empty string as a title or using the `func NewMessage(message string) N
 
 ## Using the command
 
-This repo has a simple [command](https://github.com/Scotow/notigo/tree/master/cmd/notigo) that allows you to send a notifcation from your favorite shell.
+This repo has a simple [command](https://github.com/Scotow/notigo/tree/master/cmd/notigo) that allows you to send a notification from your favorite shell.
 
 ```
 Usage of notigo:
-  -e string
+  [-e EVENT]
     	event name (default "notigo")
-  -k string
+  [-k KEY]...
     	IFTTT authentication key, ~/.config/notigo if not set
-  -t string
+  [-t TITLE]
     	notification title
 ```
 
-The command will use the Webhook key(s) stored in the `~/.config/notigo` if it exists. If it doesn't exist you have to specify your key by using the `-k KEY` option.
+The command will use the Webhook key(s) stored in the `~/.config/notigo` if it exists. If it doesn't exist you have to specify your key(s) by using the `-k KEY` option.
 
 The default event name is `notigo` and can be changed with the `-e EVENT` option.
 
