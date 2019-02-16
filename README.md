@@ -25,7 +25,7 @@ In order to receive a notification from IFTTT, you have to create an IFTTT [acco
 
 ## Creating the IFTTT applet
 
-Next you need to create the corresponding applet in your IFTTT account. Applets that use Webhook as a trigger can't be share like other applets, so you need to create it manually:
+Next, you need to create the corresponding applet in your IFTTT account. Applets that use Webhook as a trigger can't be share like other applets, so you need to create it manually:
 
 * Go to the applet [creation](https://ifttt.com/create) page;
 * Search for `webhook` and select the `Receive a web request` trigger;
@@ -77,7 +77,7 @@ func main() {
 }
 ```
 
-You can use the `func (k *Key) SendEvent(n Notification, event string) (err error)` and specify and custom event name if you registered a different one while creating the applet.
+You can use the `func (k *Key) SendEvent(n Notification, event string) error` and specify a custom event name if you registered a different one while creating the applet.
 
 Using an empty string as a title or using the `func NewMessage(message string) Notification` function will try to use the hostname of the machine.
 
