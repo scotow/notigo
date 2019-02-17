@@ -79,7 +79,7 @@ func main() {
 
 You can use the `func (k *Key) SendEvent(n Notification, event string) error` and specify a custom event name if you registered a different one while creating the applet.
 
-Using an empty string as a title or using the `func NewMessage(message string) Notification` function will try to use the hostname of the machine.
+Using an empty string as a title or using the `func NewMessage(message string) Notification` function will try to use the hostname of the machine as a title.
 
 
 ## Using the command
