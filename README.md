@@ -96,7 +96,7 @@ Usage of notigo:
     	notification title
 ```
 
-The command will use the Webhook key(s) stored in the `~/.config/notigo` if it exists. If it doesn't exist you have to specify your key(s) by using the `-k KEY` option.
+The command will use the Webhook key(s) stored in the `~/.config/notigo` file if it exists. The keys must be specified one per line. If it doesn't exist you have to specify your key(s) by using the `-k KEY` option.
 
 The default event name is `notigo` and can be changed with the `-e EVENT` option.
 
