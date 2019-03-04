@@ -18,7 +18,6 @@ const (
 
 var (
 	keysFlag keys
-	//keyFlag     = flag.String("k", "", "IFTTT authentication key, ~/.config/notigo if not set")
 	eventFlag = flag.String("e", notigo.DefaultEvent, "event name")
 	titleFlag = flag.String("t", "", "notification title")
 )
