@@ -41,11 +41,7 @@ The final configuration of the applet looks like this:
 
 ## Getting the Webhook key
 
-The last step before using the applet is to get your Webhook key. Head to the [Webhook settings page](https://ifttt.com/services/maker_webhooks/settings) and get the key from the URL.
-
-For example, if the URL is `https://maker.ifttt.com/use/eHolJ7y7b8KVk4wUgZS6mY`, your key is `eHolJ7y7b8KVk4wUgZS6mY`.
-
-NB: Clicking the `Edit connection` button reset the event key, but the old key seems to be usable for a while.
+The last step before using the applet is to get your Webhook key. Head to the [Webhook settings page](https://ifttt.com/maker_webhooks) then click on the `Documentation` button on the upper right corner.
 
 Now that you have created the applet and got your Webhook key, you can use the library or the example command.
 
