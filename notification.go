@@ -1,38 +1,37 @@
 package notigo
 
 import (
-    "fmt"
-    "os"
+	"os"
 )
 
 type Notification struct {
-    Title string    `json:"value1"`
-    Message string  `json:"value2"`
+	Title   string `json:"value1"`
+	Message string `json:"value2"`
 }
 
 func NewNotification(title, message string) Notification {
-    if title == "" {
-        return NewMessage(message)
-    } else {
-        return Notification{
-            Title: title,
-            Message: message,
-        }
-    }
+	if title == "" {
+		return NewMessage(message)
+	} else {
+		return Notification{
+			Title:   title,
+			Message: message,
+		}
+	}
 }
 
 func NewMessage(message string) Notification {
-    var title string
+	var title string
 
-    hostname, err := os.Hostname()
-    if err != nil {
-        title = "Notigo"
-    } else {
-        title = fmt.Sprintf("Notigo - %s", hostname)
-    }
+	hostname, err := os.Hostname()
+	if err != nil {
+		title = "Notigo"
+	} else {
+		title = hostname
+	}
 
-    return Notification{
-        Title: title,
-        Message: message,
-    }
+	return Notification{
+		Title:   title,
+		Message: message,
+	}
 }
