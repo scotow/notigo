@@ -84,20 +84,24 @@ This repo has a simple [command](https://github.com/Scotow/notigo/tree/master/cm
 
 ```
 Usage of notigo:
-  [-e EVENT]
-    	event name (default "notigo")
-  [-k KEY]...
-    	IFTTT authentication key(s), ~/.config/notigo if not set
-  [-t TITLE]
-    	notification title
+
+notigo [-k KEY]... [-K PATH]... [-e EVENT] [-t TITLE] [-f PATH]... [-m [-s SEPARATOR]] [-d DELAY] [-c] ARGS...
+
+  -k, --key=KEY                      List of key(s) to use
+  -K, --keys-path=PATH               List of file path(s) that contains key(s)
+  -e, --event=EVENT                  Event key passed to IFTTT (default: notigo)
+  -t, --title=TITLE                  Title of the notification(s)
+  -f, --file=PATH                    List of file(s) used for content
+  -m, --merge                        Content should be merged
+  -s, --merge-separator=SEPARATOR    Separator used while merging content (default: "\n")
+  -d, --delay=DELAY                  Delay between two notification (default: 3s)
+  -c, --concurrent                   Concurrently send notifications to the keys
 ```
 
-The command will use the Webhook key(s) stored in the `~/.config/notigo` file if it exists. The keys must be specified one per line. If it doesn't exist you have to specify your key(s) by using the `-k KEY` option.
+If no keys is specified using the `-k` or `-K` option, the command will fallback to the  `~/.config/notigo/keys` file if it exists.
 
-The default event name is `notigo` and can be changed with the `-e EVENT` option.
+The file(s) containing keys (`-K` option or the fallback config file), must contains one key per line.
 
-You can specify a title for the notification by using the `-t TITLE` option.
-
-The body of the notification is the concatenation of the remaining arguments or read from `STDIN` if there is none.
+If no notification content is specified using the `-f` option, the concatenation of the remaining arguments is used. Or, in last resort, the command will read from `STDIN`.
 
 ***Enjoy simple notifications!***
