@@ -1,102 +1,92 @@
 package main
 
 import (
-	"bufio"
-	"flag"
 	"fmt"
-	"github.com/scotow/notigo"
-	"io/ioutil"
 	"os"
-	"os/user"
-	"path/filepath"
-	"strings"
+	"time"
+
+	"github.com/jessevdk/go-flags"
+	. "github.com/scotow/notigo"
 )
-
-const (
-	keySubPath = ".config/notigo/config"
-)
-
-var (
-	keysFlag keys
-	eventFlag = flag.String("e", notigo.DefaultEvent, "event name")
-	titleFlag = flag.String("t", "", "notification title")
-)
-
-func findKeys() (keys, error) {
-	if len(keysFlag) != 0 {
-		return keysFlag, nil
-	}
-
-	usr, err := user.Current()
-	if err != nil {
-		return nil, err
-	}
-
-	keyPath := filepath.Join(usr.HomeDir, keySubPath)
-
-	file, err := os.Open(keyPath)
-	if err != nil {
-		return nil, err
-	}
-
-	scanner := bufio.NewScanner(file)
-
-	var k keys
-	for scanner.Scan() {
-		k = append(k, notigo.Key(strings.TrimSpace(scanner.Text())))
-	}
-
-	err = scanner.Err()
-	if err != nil {
-		_ = file.Close()
-		return nil, err
-	}
-
-	err = file.Close()
-	return k, err
-}
-
-func getMessage() (message string, err error) {
-	args := flag.Args()
-	if len(args) > 0 {
-		message = strings.Join(args, " ")
-		return
-	}
-
-	bytes, err := ioutil.ReadAll(os.Stdin)
-	if err != nil {
-		return
-	}
-
-	message = string(bytes)
-	return
-}
 
 func main() {
-	flag.Var(&keysFlag, "k", "IFTTT authentication key(s), ~/.config/notigo if not set")
-	flag.Parse()
-
-	keys, err := findKeys()
+	var opt options
+	args, err := flags.Parse(&opt)
 	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, "cannot get API key:", err)
+		_, _ = fmt.Fprintln(os.Stderr, "cannot parse options:", err)
 		os.Exit(1)
 	}
 
-	message, err := getMessage()
+	keys, err := findKeys(opt)
 	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, "cannot parse the message:", err)
+		_, _ = fmt.Fprintln(os.Stderr, "cannot find IFTTT key(s):", err)
 		os.Exit(1)
 	}
 
-	if message == "" {
-		message = "[No content]"
+	if len(keys) == 0 {
+		_, _ = fmt.Fprintln(os.Stderr, "no IFTTT key(s) found")
+		os.Exit(1)
 	}
 
-	for _, key := range keys {
-		err = key.SendEvent(notigo.NewNotification(*titleFlag, message), *eventFlag)
+	messages, err := findMessages(opt, args)
+	if err != nil {
+		_, _ = fmt.Fprintln(os.Stderr, "cannot find messages:", err)
+		os.Exit(1)
+	}
+
+	if len(messages) == 0 {
+		messages = []string{" "}
+	}
+
+	if opt.Concurrent {
+		errorChan := make(chan error)
+
+		for _, key := range keys {
+			go func(key Key) {
+				err := sendNotifications(key, opt.Event, opt.Title, messages, opt.Delay)
+				errorChan <- err
+			}(key)
+		}
+
+		var err error
+		for range keys {
+			err = <-errorChan
+		}
+
 		if err != nil {
 			_, _ = fmt.Fprintln(os.Stderr, "cannot send notification:", err)
 			os.Exit(1)
 		}
+	} else {
+		for _, key := range keys {
+			err := sendNotifications(key, opt.Event, opt.Title, messages, opt.Delay)
+			if err != nil {
+				_, _ = fmt.Fprintln(os.Stderr, "cannot send notification:", err)
+				os.Exit(1)
+			}
+		}
 	}
+}
+
+func sendNotifications(key Key, event, title string, messages []string, delay time.Duration) error {
+	if len(messages) == 0 {
+		return nil
+	}
+
+	for _, message := range messages[:len(messages)-1] {
+		err := key.SendEvent(NewNotification(title, message), event)
+		if err != nil {
+			return err
+		}
+
+		time.Sleep(delay)
+	}
+
+	// Send the last notification.
+	err := key.SendEvent(NewNotification(title, messages[len(messages)-1]), event)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
