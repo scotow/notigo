@@ -19,6 +19,7 @@ prepare(){
 build(){
   export GOPATH="${srcdir}"
   cd "src/github.com/scotow/${pkgname}"
+  go get -v ./...
   go install \
 	-gcflags "all=-trimpath=${GOPATH}/src" \
 	-asmflags "all=-trimpath=${GOPATH}/src" \
