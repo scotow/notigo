@@ -12,27 +12,17 @@ import (
 func main() {
 	var opt options
 	args, err := flags.Parse(&opt)
-	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, "cannot parse options:", err)
-		os.Exit(1)
-	}
+	exitWithTextIfError("cannot parse options:", err)
 
 	keys, err := findKeys(opt)
-	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, "cannot find IFTTT key(s):", err)
-		os.Exit(1)
-	}
+	exitWithTextIfError("cannot find IFTTT key(s):", err)
 
 	if len(keys) == 0 {
-		_, _ = fmt.Fprintln(os.Stderr, "no IFTTT key(s) found")
-		os.Exit(1)
+		exitWithText("no IFTTT key(s) found")
 	}
 
 	messages, err := findMessages(opt, args)
-	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, "cannot find messages:", err)
-		os.Exit(1)
-	}
+	exitWithTextIfError("cannot find messages:", err)
 
 	if len(messages) == 0 {
 		messages = []string{" "}
@@ -48,22 +38,22 @@ func main() {
 			}(key)
 		}
 
-		var err error
+		hasError := false
 		for range keys {
-			err = <-errorChan
+			err := <-errorChan
+			if err != nil {
+				printError("cannot send notification:", err)
+				hasError = true
+			}
 		}
 
-		if err != nil {
-			_, _ = fmt.Fprintln(os.Stderr, "cannot send notification:", err)
+		if hasError {
 			os.Exit(1)
 		}
 	} else {
 		for _, key := range keys {
 			err := sendNotifications(key, opt.Event, opt.Title, messages, opt.Delay)
-			if err != nil {
-				_, _ = fmt.Fprintln(os.Stderr, "cannot send notification:", err)
-				os.Exit(1)
-			}
+			exitWithTextIfError("cannot send notification:", err)
 		}
 	}
 }
@@ -89,4 +79,19 @@ func sendNotifications(key Key, event, title string, messages []string, delay ti
 	}
 
 	return nil
+}
+
+func printError(args ...interface{}) {
+	_, _ = fmt.Fprintln(os.Stderr, args...)
+}
+
+func exitWithText(args ...interface{}) {
+	printError(args...)
+	os.Exit(1)
+}
+
+func exitWithTextIfError(text string, err error) {
+	if err != nil {
+		exitWithText(text, err.Error())
+	}
 }
