@@ -92,6 +92,9 @@ func exitWithText(args ...interface{}) {
 
 func exitWithTextIfError(text string, err error) {
 	if err != nil {
+		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
+			os.Exit(0)
+		}
 		exitWithText(text, err.Error())
 	}
 }
