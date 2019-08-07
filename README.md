@@ -5,7 +5,7 @@
 [![GoDoc](https://godoc.org/github.com/scotow/notigo?status.svg)](https://godoc.org/github.com/scotow/notigo)
 
 ```
-go get -u github.com/Scotow/notigo
+go get github.com/scotow/notigo
 ```
 
 
@@ -105,5 +105,11 @@ If no keys is specified using the `-k` or `-K` option, the command will fallback
 The file(s) containing keys (`-K` option or the fallback config file), must contains one key per line.
 
 If no notification content is specified using the `-f` option, the concatenation of the remaining arguments is used. Or, in last resort, the command will read from `STDIN`.
+
+## Installing the command
+
+To build a binary of this command, simply clone the repo and the run `go build .` while being the `cmd/notigo` directory.
+
+For Arch Linux users, the command is available on the AUR repositories at the following address : [notigo](https://aur.archlinux.org/packages/notigo/).
 
 ***Enjoy simple notifications!***
