@@ -108,7 +108,7 @@ If no notification content is specified using the `-f` option, the concatenation
 
 ## Installing the command
 
-To build a binary of this command, simply clone the repo and the run `go build .` while being the `cmd/notigo` directory.
+To build a binary of this command, simply clone the repo and the run `go build .` while being in the `cmd/notigo` directory.
 
 For Arch Linux users, the command is available on the AUR repositories at the following address : [notigo](https://aur.archlinux.org/packages/notigo/).
 
