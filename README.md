@@ -2,6 +2,8 @@
 
 💬 Send iOS/Android notifications using IFTTT's Webhook 💬
 
+[![GoDoc](https://godoc.org/github.com/scotow/notigo?status.svg)](https://godoc.org/github.com/scotow/notigo)
+
 ```
 go get -u github.com/Scotow/notigo
 ```
