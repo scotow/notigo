@@ -10,30 +10,39 @@ import (
 )
 
 func main() {
-	var opt options
-	args, err := flags.Parse(&opt)
-	exitWithTextIfError("cannot parse options:", err)
+	var opts options
+	parser := flags.NewParser(&opts, flags.Default)
+	parser.Usage = "[-k KEY]... [-K PATH]... [-e EVENT] [-t TITLE] [-f PATH]... [-m [-s SEPARATOR]] [-d DELAY] [-c] ARGS..."
 
-	keys, err := findKeys(opt)
+	args, err := parser.Parse()
+	if err != nil {
+		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
+			os.Exit(0)
+		} else {
+			os.Exit(1)
+		}
+	}
+
+	keys, err := findKeys(opts)
 	exitWithTextIfError("cannot find IFTTT key(s):", err)
 
 	if len(keys) == 0 {
 		exitWithText("no IFTTT key(s) found")
 	}
 
-	messages, err := findMessages(opt, args)
+	messages, err := findMessages(opts, args)
 	exitWithTextIfError("cannot find messages:", err)
 
 	if len(messages) == 0 {
 		messages = []string{" "}
 	}
 
-	if opt.Concurrent {
+	if opts.Concurrent {
 		errorChan := make(chan error)
 
 		for _, key := range keys {
 			go func(key Key) {
-				err := sendNotifications(key, opt.Event, opt.Title, messages, opt.Delay)
+				err := sendNotifications(key, opts.Event, opts.Title, messages, opts.Delay)
 				errorChan <- err
 			}(key)
 		}
@@ -52,7 +61,7 @@ func main() {
 		}
 	} else {
 		for _, key := range keys {
-			err := sendNotifications(key, opt.Event, opt.Title, messages, opt.Delay)
+			err := sendNotifications(key, opts.Event, opts.Title, messages, opts.Delay)
 			exitWithTextIfError("cannot send notification:", err)
 		}
 	}
