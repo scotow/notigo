@@ -90,13 +90,13 @@ Usage of notigo:
 notigo [-k KEY]... [-K PATH]... [-e EVENT] [-t TITLE] [-f PATH]... [-m [-s SEPARATOR]] [-d DELAY] [-c] ARGS...
 
   -k, --key=KEY                      List of key(s) to use
-  -K, --keys-path=PATH               List of file path(s) that contains key(s)
+  -K, --keys-path=PATH               List of file path(s) that contains key(s) (default: ~/.config/notigo/keys if no key specified)
   -e, --event=EVENT                  Event key passed to IFTTT (default: notigo)
   -t, --title=TITLE                  Title of the notification(s)
   -f, --file=PATH                    List of file(s) used for content
   -m, --merge                        Content should be merged
   -s, --merge-separator=SEPARATOR    Separator used while merging content (default: "\n")
-  -d, --delay=DELAY                  Delay between two notification (default: 3s)
+  -d, --delay=DELAY                  Delay between two notifications (default: 3s)
   -c, --concurrent                   Concurrently send notifications to the keys
 ```
 

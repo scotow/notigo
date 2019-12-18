@@ -18,13 +18,13 @@ const (
 
 type options struct {
 	Keys       []string      `short:"k" long:"key" description:"List of key(s) to use" value-name:"KEY"`
-	KeysPaths  []string      `short:"K" long:"keys-path" description:"List of file path(s) that contains key(s)" value-name:"PATH"`
+	KeysPaths  []string      `short:"K" long:"keys-path" description:"List of file path(s) that contains key(s)" default-mask:"~/.config/notigo/keys if no key specified" value-name:"PATH"`
 	Event      string        `short:"e" long:"event" description:"Event key passed to IFTTT" default:"notigo" value-name:"EVENT"`
 	Title      string        `short:"t" long:"title" description:"Title of the notification(s)" value-name:"TITLE"`
 	Files      []string      `short:"f" long:"file" description:"List of file(s) used for content" value-name:"PATH"`
 	Merge      bool          `short:"m" long:"merge" description:"Content should be merged"`
 	MergeSep   string        `short:"s" long:"merge-separator" description:"Separator used while merging content" default:"\n" value-name:"SEPARATOR"`
-	Delay      time.Duration `short:"d" long:"delay" description:"Delay between two notification" default:"3s" value-name:"DELAY"`
+	Delay      time.Duration `short:"d" long:"delay" description:"Delay between two notifications" default:"3s" value-name:"DELAY"`
 	Concurrent bool          `short:"c" long:"concurrent" description:"Concurrently send notifications to the keys"`
 }
 
